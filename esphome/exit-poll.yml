@@ -22,23 +22,6 @@ packages:
   wifi-diagnostics: github://romkey/esphome-lib/lib/wifi-diagnostics.yml@main
   esp32-diagnostics: github://romkey/esphome-lib/lib/esp32.yml@main
 
-logger:
-
-api:
-  encryption:
-
-ota:
-  platform: esphome
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  id: wifi_id
-
-  ap:
-    ssid: "${name} Fallback Hotspot"
-
-captive_portal:
 
 time:
   - platform: homeassistant

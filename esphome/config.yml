@@ -12,13 +12,9 @@ packages:
     ref: main
     refresh: 1s
 
-api:
-  encryption:
-    key: "YOUR API KEY"
-
 ota:
   platform: esphome
-  password: "YOUR OTA PASSWORD"
+  password: !secret ota_password
 
 wifi:
   ssid: !secret wifi_ssid
