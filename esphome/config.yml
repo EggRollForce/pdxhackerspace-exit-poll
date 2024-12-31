@@ -3,14 +3,12 @@ substitutions:
   friendly_name: "Exit Poll"
   led_chip: "WS2812"
   led_order: "GRB"
+  led_number: "8"
   display_model: "ILI9488"
 
-packages:
-  exit-poll:
-    url: https://github.com/romkey/pdxhackerspace-exit-poll
-    files: [esphome/exit-poll.yml, esphome/tinys3.yml]
-    ref: main
-    refresh: 1s
+api:
+  encryption:
+    key: hGXeUYQ8vN8ICc6RMOmoznIP5u21VMO+oal2zd5ikZ8=
 
 ota:
   platform: esphome
@@ -20,7 +18,10 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
 #  use_address: w.x.y.z
+  ap: 
+    ssid: "Test"
+    password: "ctrlctrlh"
 
-  ap:
-    ssid: "PDX Hackerspace Exit Poll Fallback Hotspot"
-    password: "YOUR HOTSPOT PASSWORD"
+packages:
+  tinys3: !include tinys3.yml
+  exit-poll: !include exit-poll.yml
