@@ -5,9 +5,11 @@ substitutions:
   led_order: "GRB"
   led_number: "8"
   display_model: "ILI9488"
+  touch_controller: "XPT2046"
 
 api:
   encryption:
+#this is literally /dev/urandom piped to base64 so don't expect it to do anything!
     key: hGXeUYQ8vN8ICc6RMOmoznIP5u21VMO+oal2zd5ikZ8=
 
 ota:
