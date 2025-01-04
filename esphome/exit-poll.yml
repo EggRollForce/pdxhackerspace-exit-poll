@@ -88,31 +88,31 @@ color:
     green: 100%
     blue: 100%
 
-image:
-  - file: "files/lcars-blue.png"
-    id: lcars_blue
-    type: RGB565
-  - file: "files/lcars-red.png"
-    id: lcars_red
-    type: RGB565
-  - file: "files/lcars-green-bar.png"
-    id: lcars_green_bar
-    type: RGB565
-  - file: "files/lcars-red-bar.png"
-    id: lcars_red_bar
-    type: RGB565
-  - file: "files/lcars-gray-bar.png"
-    id: lcars_gray_bar
-    type: RGB565
-  - file: "files/lcars-blue-arc.png"
-    id: lcars_blue_arc
-    type: RGB565
-  - file: "files/lcars-red-arc.png"
-    id: lcars_red_arc
-    type: RGB565
-  - file: "files/lcars-top-arc.png"
-    id: lcars_top_arc
-    type: RGB565
+# image:
+#   - file: "files/lcars-blue.png"
+#     id: lcars_blue
+#     type: RGB565
+#   - file: "files/lcars-red.png"
+#     id: lcars_red
+#     type: RGB565
+#   - file: "files/lcars-green-bar.png"
+#     id: lcars_green_bar
+#     type: RGB565
+#   - file: "files/lcars-red-bar.png"
+#     id: lcars_red_bar
+#     type: RGB565
+#   - file: "files/lcars-gray-bar.png"
+#     id: lcars_gray_bar
+#     type: RGB565
+#   - file: "files/lcars-blue-arc.png"
+#     id: lcars_blue_arc
+#     type: RGB565
+#   - file: "files/lcars-red-arc.png"
+#     id: lcars_red_arc
+#     type: RGB565
+#   - file: "files/lcars-top-arc.png"
+#     id: lcars_top_arc
+#     type: RGB565
 
 i2c:
   sda: ${i2c_sda_pin}
@@ -126,6 +126,19 @@ spi:
   miso_pin: ${spi_miso_pin}
   interface: hardware
 
+touchscreen:
+  platform: xpt2046
+  id: disp_touchscreen
+  cs_pin: ${touchscreen_cs_pin}
+  interrupt_pin: ${touchscreen_irq_pin}
+  calibration:
+    x_min: 0
+    y_min: 0
+    x_max: 1000
+    y_max: 1000
+
+
+
 display:
   # https://esphome.io/components/display/ili9xxx
   - platform: ili9xxx
@@ -133,82 +146,15 @@ display:
     dc_pin: ${display_dc_pin}
     reset_pin: ${display_rst_pin}
     cs_pin: ${display_cs_pin}
+    data_rate: 40MHZ
     invert_colors: false
     auto_clear_enabled: false
+    update_interval: never
+    rotation: 270
+    dimensions:
+      width: 480
+      height: 320
 
-    transform:
-      swap_xy: true
-    spi_mode: 3
-    # lambda: |-
-    #   static boolean first_draw = 1;
-
-    #   if(first_draw) {
-    #     it.fill(id(my_black));
-
-    #     it.image(0, 0, id(lcars_top_arc));
-    #   }
-
-    #   auto time = id(homeassistant_time).now();
-    #   if(id(wifi_id).is_connected()){
-    #     it.print(250, 0, id(font_icons_40pt), id(my_green), "\U0000E63E");
-    #   } else {
-    #     it.print(250, 0, id(font_icons_40pt), id(my_red), "\U0000E648");
-    #   }
-
-    #   if(time.is_valid()) {
-    #   //  it.printf(100, 8, id(font_12pt), id(my_green), "%02d:%02d:%02d %d/%d/%d", time.hour, time.minute, time.second, time.month, time.day_of_month, time.year);
-    #     it.printf(130, 8, id(font_20pt), id(my_green), "%02d:%02d:%02d", time.hour, time.minute, time.second);
-    #   } else {
-    #   //  it.print(100, 8, id(font_12pt), id(my_red), "--:--:-- --/--/--");
-    #     it.print(130, 8, id(font_20pt), id(my_red), "--:--:--");
-    #   }
-
-    #   #define LCARS_TOP(sec_a, sec_b) \
-    #       it.image(0, row, id(lcars_blue_arc)); \
-    #       it.image(159, row, id(lcars_blue_arc)); \
-    #       it.print(150, row, id(font_40pt), id(my_black), TextAlign::TOP_RIGHT, sec_a); \
-    #       it.print(310, row, id(font_40pt), id(my_black), TextAlign::TOP_RIGHT, sec_b); \
-    #       row += 40;
-
-    #   #define LCARS_ROW(label, state1, state2) \
-    #       if(isnan(state1)) { \
-    #           it.image(0, row, id(lcars_gray_bar)); \
-    #       } else if(state1 == 0) { \
-    #           it.image(0, row, id(lcars_green_bar)); \
-    #       } else { \
-    #           it.image(0, row, id(lcars_red_bar)); \
-    #       } \
-    #       if(isnan(state2)) { \
-    #           it.image(159, row, id(lcars_gray_bar)); \
-    #       } else if(state2 == 0) { \
-    #           it.image(159, row, id(lcars_green_bar)); \
-    #       } else { \
-    #           it.image(159, row, id(lcars_red_bar)); \
-    #       } \
-    #       it.print(99, row, id(font_20pt), id(my_white), TextAlign::TOP_RIGHT, label); \
-    #       it.print(258, row, id(font_20pt), id(my_white), TextAlign::TOP_RIGHT, label); \
-    #       \
-    #       if(!isnan(state1))  \
-    #           it.printf(120, row, id(font_20pt), id(my_white),  "%1.0f", state1); \
-    #       if(!isnan(state2))  \
-    #           it.printf(280, row, id(font_20pt), id(my_white), "%1.0f", state2); \
-    #       row += 40;
-
-    #   auto row = 80;
-
-    #   LCARS_TOP("Sec 1", "Sec 2")
-
-    #   LCARS_ROW("Doors", id(section_1_doors_open).state, id(section_2_doors_open).state)
-    #   LCARS_ROW("Locks", id(section_1_doors_unlocked).state, id(section_2_doors_unlocked).state)
-    #   LCARS_ROW("AV", id(section_1_av_on).state, id(section_2_av_on).state)
-    #   LCARS_ROW("Water", id(section_1_water_running).state, id(section_2_water_running).state)
-
-    #   LCARS_TOP("Sec 3", "Sec 4")
-
-    #   LCARS_ROW("Doors", id(section_3_doors_open).state, id(section_4_doors_open).state)
-    #   LCARS_ROW("Locks", id(section_3_doors_unlocked).state, id(section_4_doors_unlocked).state)
-    #   LCARS_ROW("AV", id(section_3_av_on).state, id(section_4_av_on).state)
-    #   LCARS_ROW("Water", id(section_3_water_running).state, id(section_4_water_running).state)
 
 
 lvgl:

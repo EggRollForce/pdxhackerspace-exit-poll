@@ -7,6 +7,8 @@ substitutions:
   display_dc_pin: "4"
   display_cs_pin: "2"
   display_rst_pin: "3"
+  touchscreen_cs_pin: "34"
+  touchscreen_irq_pin: "35"
   led_data_pin: "7"
 
 
